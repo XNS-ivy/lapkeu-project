@@ -1,2 +1,2 @@
-# lapkeu-project
-laporan keuangan
+# ecommerce-project
+ecommerce for my team`s final exam
