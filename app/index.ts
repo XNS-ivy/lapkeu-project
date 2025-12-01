@@ -1,4 +1,6 @@
 import { Elysia, t } from 'elysia'
+import cors from 'elysia'
+
 const port = 3000
 const app = new Elysia()
 
@@ -29,5 +31,6 @@ app.post('/math/add', ({ body }: any) => {
 })
 
 app.listen(port)
+app.use(new cors())
 
 console.log(`🟢 Server running at http://localhost:${port}`)
