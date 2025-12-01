@@ -6,11 +6,14 @@
     "elysia": "^1.4.16"
   },
   "scripts": {
-    "dev" : "bun --watch run index.ts"
+    "dev": "bun --watch run index.ts"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "private": true,
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "mysql2": "^3.15.3"
+  }
 }
