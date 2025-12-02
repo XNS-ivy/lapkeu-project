@@ -7,4 +7,4 @@ const db = await mysql.createConnection({
   database: "ecommerce_bahan_berbahaya",
 })
 
-console.log("Connected to MariaDB!")
+export default db
