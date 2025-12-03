@@ -22,6 +22,7 @@ export default class DatabaseQuerry {
     }
     async executeQuery(res: string): Promise<QueryResult | void> {
         if (!this.connection) throw new Error("No connection")
+        if (this.connection == null) await this.init()
         const [rows] = await this.connection.query(res)
         return rows
     }
