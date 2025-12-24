@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { useCart } from '../context/CartContext';
-import { ordersAPI } from '../api/orders.api';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react'
+import { useCart } from '../context/CartContext'
+import { ordersAPI } from '../api/orders.api'
+import { useNavigate } from 'react-router-dom'
 
 export const Checkout: React.FC = () => {
-  const { items:  cartItems, summary, clearCart } = useCart();
-  const navigate = useNavigate();
+  const { items:  cartItems, summary, clearCart } = useCart()
+  const navigate = useNavigate()
 
-  const [deliveryType, setDeliveryType] = useState<'SUPPLY' | 'BUY'>('BUY');
-  const [deliveryAddress, setDeliveryAddress] = useState('');
-  const [notes, setNotes] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [deliveryType, setDeliveryType] = useState<'SUPPLY' | 'BUY'>('BUY')
+  const [deliveryAddress, setDeliveryAddress] = useState('')
+  const [notes, setNotes] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleCheckout = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+    e.preventDefault()
+    setIsLoading(true)
+    setError(null)
 
     try {
       const order = await ordersAPI.createOrder({
@@ -27,16 +27,16 @@ export const Checkout: React.FC = () => {
           material_id: item.material_id,
           quantity: item. quantity,
         })),
-      });
+      })
 
-      await clearCart();
-      navigate(`/order-confirmation/${order.id}`);
+      await clearCart()
+      navigate(`/order-confirmation/${order.id}`)
     } catch (err: any) {
-      setError(err. response?.data?.message || 'Checkout failed');
+      setError(err. response?.data?.message || 'Checkout failed')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   if (! cartItems.length) {
     return (
@@ -53,7 +53,7 @@ export const Checkout: React.FC = () => {
           </button>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -175,5 +175,5 @@ export const Checkout: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

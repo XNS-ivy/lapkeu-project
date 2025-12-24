@@ -1,63 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Package, ChevronLeft, ShoppingCart } from 'lucide-react';
-import { Material } from '../types';
-import { materialsAPI } from '../api/materials.api';
-import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
-import { LoadingSpinner } from '../components/common/LoadingSpinner';
+import React, { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { Package, ChevronLeft, ShoppingCart } from 'lucide-react'
+import { Material } from '../types'
+import { materialsAPI } from '../api/materials.api'
+import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
+import { LoadingSpinner } from '../components/common/LoadingSpinner'
 
 export const ProductDetail: React.FC = () => {
-  const { id } = useParams<{ id:  string }>();
-  const navigate = useNavigate();
-  const [material, setMaterial] = useState<Material | null>(null);
-  const [quantity, setQuantity] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
+  const { id } = useParams<{ id:  string }>()
+  const navigate = useNavigate()
+  const [material, setMaterial] = useState<Material | null>(null)
+  const [quantity, setQuantity] = useState(1)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
+  const [successMessage, setSuccessMessage] = useState('')
   
-  const { addItem } = useCart();
-  const { isAuthenticated } = useAuth();
+  const { addItem } = useCart()
+  const { isAuthenticated } = useAuth()
 
   useEffect(() => {
     const fetchMaterial = async () => {
-      if (! id) return;
+      if (! id) return
       try {
-        const data = await materialsAPI.getById(id);
-        setMaterial(data);
+        const data = await materialsAPI.getById(id)
+        setMaterial(data)
       } catch (err) {
-        setError('Produk tidak ditemukan');
+        setError('Produk tidak ditemukan')
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
+    }
 
-    fetchMaterial();
-  }, [id]);
+    fetchMaterial()
+  }, [id])
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
-      alert('Silakan login terlebih dahulu');
-      return;
+      alert('Silakan login terlebih dahulu')
+      return
     }
 
-    if (! material) return;
+    if (! material) return
 
-    setIsAddingToCart(true);
+    setIsAddingToCart(true)
     try {
-      await addItem(material.id, quantity);
-      setSuccessMessage(`${material.material_name} ditambahkan ke keranjang!`);
-      setQuantity(1);
-      setTimeout(() => setSuccessMessage(''), 3000);
+      await addItem(material.id, quantity)
+      setSuccessMessage(`${material.material_name} ditambahkan ke keranjang!`)
+      setQuantity(1)
+      setTimeout(() => setSuccessMessage(''), 3000)
     } catch (err) {
-      setError('Gagal menambahkan ke keranjang');
+      setError('Gagal menambahkan ke keranjang')
     } finally {
-      setIsAddingToCart(false);
+      setIsAddingToCart(false)
     }
-  };
+  }
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />
   if (error || !material) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -71,7 +71,7 @@ export const ProductDetail: React.FC = () => {
           </button>
         </div>
       </div>
-    );
+    )
   }
 
   const getHazardColor = (hazardClass: string) => {
@@ -82,9 +82,9 @@ export const ProductDetail: React.FC = () => {
       'Poison': 'bg-purple-100 text-purple-600',
       'Radioactive': 'bg-green-100 text-green-600',
       'Oxidizer': 'bg-blue-100 text-blue-600',
-    };
-    return colors[hazardClass] || 'bg-gray-100 text-gray-600';
-  };
+    }
+    return colors[hazardClass] || 'bg-gray-100 text-gray-600'
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -238,5 +238,5 @@ export const ProductDetail: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

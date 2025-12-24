@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Package, AlertTriangle, Flame, Droplet, Skull, Zap, Radiation } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { Material } from '../types';
-import { materialsAPI } from '../api/materials.api';
-import { LoadingSpinner } from '../components/common/LoadingSpinner';
+import React, { useState, useEffect } from 'react'
+import { ChevronLeft, ChevronRight, Package, AlertTriangle, Flame, Droplet, Skull, Zap, Radiation } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Material } from '../types'
+import { materialsAPI } from '../api/materials.api'
+import { LoadingSpinner } from '../components/common/LoadingSpinner'
 
 interface CategoryItem {
-  name: string;
-  icon: React.ReactNode;
-  hazardClass: string;
-  color: string;
+  name: string
+  icon: React.ReactNode
+  hazardClass: string
+  color: string
 }
 
 export const Dashboard: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [featuredMaterials, setFeaturedMaterials] = useState<Material[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [featuredMaterials, setFeaturedMaterials] = useState<Material[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const navigate = useNavigate()
 
   const slides = [
     {
@@ -34,7 +34,7 @@ export const Dashboard: React.FC = () => {
       subtitle:  "Monitor Pengiriman Anda",
       bgColor: "from-green-500 to-emerald-700"
     }
-  ];
+  ]
 
   const categories:  CategoryItem[] = [
     {
@@ -73,43 +73,43 @@ export const Dashboard: React.FC = () => {
       hazardClass: "Oxidizer",
       color: "bg-blue-100 text-blue-600 hover:bg-blue-200"
     }
-  ];
+  ]
 
   // Auto-slide
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [slides.length]);
+      setCurrentSlide((prev) => (prev + 1) % slides.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [slides.length])
 
   // Fetch featured materials
   useEffect(() => {
     const fetchMaterials = async () => {
       try {
-        const materials = await materialsAPI.getAll({ limit: 6 });
-        setFeaturedMaterials(materials. slice(0, 6));
+        const materials = await materialsAPI.getAll({ limit: 6 })
+        setFeaturedMaterials(materials. slice(0, 6))
       } catch (error) {
-        console.error('Failed to fetch materials:', error);
+        console.error('Failed to fetch materials:', error)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
+    }
 
-    fetchMaterials();
-  }, []);
+    fetchMaterials()
+  }, [])
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
+    setCurrentSlide((prev) => (prev + 1) % slides.length)
+  }
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+  }
 
   const handleCategoryClick = (category: CategoryItem) => {
-    navigate(`/products?hazard_class=${encodeURIComponent(category.hazardClass)}`);
-  };
+    navigate(`/products?hazard_class=${encodeURIComponent(category.hazardClass)}`)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -222,8 +222,8 @@ export const Dashboard: React.FC = () => {
                         </p>
                         <button
                           onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/products/${material.id}`);
+                            e.stopPropagation()
+                            navigate(`/products/${material.id}`)
                           }}
                           className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
                         >
@@ -271,5 +271,5 @@ export const Dashboard: React.FC = () => {
         </div>
       </main>
     </div>
-  );
-};
+  )
+}

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Material } from '../types';
-import { materialsAPI } from '../api/materials.api';
-import { ProductCard } from '../components/products/ProductCard';
-import { CategoryFilter } from '../components/products/CategoryFilter';
-import { LoadingSpinner } from '../components/common/LoadingSpinner';
+import React, { useState, useEffect } from 'react'
+import { Material } from '../types'
+import { materialsAPI } from '../api/materials.api'
+import { ProductCard } from '../components/products/ProductCard'
+import { CategoryFilter } from '../components/products/CategoryFilter'
+import { LoadingSpinner } from '../components/common/LoadingSpinner'
 
 const HAZARD_CLASSES = [
   'Explosive',
@@ -12,35 +12,35 @@ const HAZARD_CLASSES = [
   'Poison',
   'Radioactive',
   'Oxidizer',
-];
+]
 
 export const Products: React.FC = () => {
-  const [materials, setMaterials] = useState<Material[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [materials, setMaterials] = useState<Material[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     const fetchMaterials = async () => {
-      setIsLoading(true);
-      setError(null);
+      setIsLoading(true)
+      setError(null)
       try {
         const data = await materialsAPI.getAll({
           hazard_class: selectedCategory || undefined,
           search: searchQuery || undefined,
-        });
-        setMaterials(data);
+        })
+        setMaterials(data)
       } catch (err) {
-        setError('Failed to load products');
-        console.error(err);
+        setError('Failed to load products')
+        console.error(err)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
+    }
 
-    fetchMaterials();
-  }, [selectedCategory, searchQuery]);
+    fetchMaterials()
+  }, [selectedCategory, searchQuery])
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -84,5 +84,5 @@ export const Products: React.FC = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}

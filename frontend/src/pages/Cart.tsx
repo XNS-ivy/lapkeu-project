@@ -1,45 +1,45 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Trash2, ShoppingCart, Plus, Minus } from 'lucide-react';
-import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
-import { LoadingSpinner } from '../components/common/LoadingSpinner';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Trash2, ShoppingCart, Plus, Minus } from 'lucide-react'
+import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
+import { LoadingSpinner } from '../components/common/LoadingSpinner'
 
 export const Cart: React.FC = () => {
-  const { items, summary, isLoading, removeItem, updateItem } = useCart();
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-  const [updatingItems, setUpdatingItems] = useState<Set<string>>(new Set());
+  const { items, summary, isLoading, removeItem, updateItem } = useCart()
+  const { isAuthenticated } = useAuth()
+  const navigate = useNavigate()
+  const [updatingItems, setUpdatingItems] = useState<Set<string>>(new Set())
 
   const handleUpdateQuantity = async (itemId: string, newQuantity:  number) => {
-    if (newQuantity < 1) return;
+    if (newQuantity < 1) return
     
-    setUpdatingItems(prev => new Set(prev).add(itemId));
+    setUpdatingItems(prev => new Set(prev).add(itemId))
     try {
-      await updateItem(itemId, newQuantity);
+      await updateItem(itemId, newQuantity)
     } finally {
       setUpdatingItems(prev => {
-        const next = new Set(prev);
-        next.delete(itemId);
-        return next;
-      });
+        const next = new Set(prev)
+        next.delete(itemId)
+        return next
+      })
     }
-  };
+  }
 
   const handleRemove = async (itemId: string) => {
     if (window.confirm('Hapus item ini dari keranjang?')) {
-      setUpdatingItems(prev => new Set(prev).add(itemId));
+      setUpdatingItems(prev => new Set(prev).add(itemId))
       try {
-        await removeItem(itemId);
+        await removeItem(itemId)
       } finally {
         setUpdatingItems(prev => {
-          const next = new Set(prev);
-          next.delete(itemId);
-          return next;
-        });
+          const next = new Set(prev)
+          next.delete(itemId)
+          return next
+        })
       }
     }
-  };
+  }
 
   if (! isAuthenticated) {
     return (
@@ -58,10 +58,10 @@ export const Cart: React.FC = () => {
           </button>
         </div>
       </div>
-    );
+    )
   }
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />
 
   if (items.length === 0) {
     return (
@@ -80,7 +80,7 @@ export const Cart: React.FC = () => {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -233,5 +233,5 @@ export const Cart: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
